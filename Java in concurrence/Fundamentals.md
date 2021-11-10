@@ -89,7 +89,7 @@ thread safety without having to examine the whole program.
 * Client-side Locking：Lock Thread-safe Classes,Not client method
 * extends or cmposition
 
-# Buling Block
+# Bulding Block
 ##  Synchronized Collections
 When Client use synchronized collections,**accessing** collection's data when **collection** is modified by other thread simultaneously maybe throw exception.
 * collection.get（ArrayIndexOutOfBoundsException）
