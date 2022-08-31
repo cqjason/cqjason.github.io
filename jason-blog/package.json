@@ -15,6 +15,9 @@
     "vuex": "^4.0.0"
   },
   "devDependencies": {
+    "element-plus": "^2.2.13",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^13.0.2",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
