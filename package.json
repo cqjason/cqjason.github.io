@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@kangc/v-md-editor": "^2.3.15",
+    "html-loader": "^4.2.0",
+    "markdown-loader": "^8.0.0",
+    "marked": "^4.2.5",
+    "pdfjs-dist": "^3.3.122",
+    "vue3-pdfjs": "^0.1.6"
+  }
+}
