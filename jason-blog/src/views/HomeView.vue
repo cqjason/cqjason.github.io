@@ -19,7 +19,7 @@
           @tab-click="selectChapter"
         >
           <el-tab-pane
-            v-for="chapter in selectedChapters.chapters"
+            v-for="chapter in selectedChapters"
             :key="chapter.index"
             :label="chapter.name"
           >
@@ -28,7 +28,7 @@
       </el-aside>
       <el-main width="75%">
         <div class="pdf">
-          <PDFView :pdfUrl="selectedChapter.chapter.pdfUrl" />
+          <PDFView :pdfUrl="selectedChapterUrl" />
         </div>
       </el-main>
     </el-container>
@@ -73,8 +73,8 @@ const selectBook = (index: number) => {
   if (selectingBook == undefined) {
     throw new Error("Unexpected error: Missing selectedChapter");
   }
-  selectedBook.book = selectingBook;
-  selectedChapters.chapters = selectingBook.chapters;
+  selectedBook.value = selectingBook;
+  selectedChapters.value = selectingBook.chapters;
   selectChapterFromIndex(0);
 };
 
@@ -88,9 +88,9 @@ const selectChapter = (tab, event) => {
 };
 
 const selectChapterFromIndex = (index: number) => {
-  const selectingChapter = selectedChapters.chapters.at(index);
+  const selectingChapter = selectedChapters.value.at(index);
   if (selectingChapter != undefined) {
-    selectedChapter.chapter = selectingChapter;
+    selectedChapterUrl.value = selectingChapter.pdfUrl;
   }
 };
 
@@ -140,18 +140,17 @@ const init = () => {
 
 init();
 
-let selectedBook: { book: book };
-let selectedChapters: { chapters: chapter[] };
-let selectedChapter: { chapter: chapter };
-let selectedChapterIndex = 0;
+const selectedBook = ref();
+const selectedChapters = ref();
+const selectedChapterUrl = ref("");
 
 const book1 = books.at(0);
 if (book1 != undefined) {
-  selectedBook = reactive({ book: book1 });
-  selectedChapters = reactive({ chapters: selectedBook.book.chapters });
-  const book1chapter1 = selectedChapters.chapters.at(0);
+  selectedBook.value = book1;
+  selectedChapters.value = selectedBook.value.chapters;
+  const book1chapter1 = selectedChapters.value.at(0);
   if (book1chapter1 != undefined) {
-    selectedChapter = reactive({ chapter: book1chapter1 });
+    selectedChapterUrl.value = book1chapter1.pdfUrl;
   } else {
     throw new Error("Unexpected error: Missing selectedChapter");
   }

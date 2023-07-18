@@ -19,7 +19,6 @@
             :background="true"
             layout="prev, pager, next"
             :total="state.numPages"
-            :key="isUpdateChild"
           />
         </div>
       </el-row>
@@ -44,15 +43,11 @@ const state = reactive({
   scale: 1, // 缩放比例
   numPages: 0, // 总页数
 });
-let isUpdateChild = ref(true);
 
 watch(
   () => props.pdfUrl,
   (newVal, oldVal) => {
     state.source = newVal;
-    isUpdateChild.value = !isUpdateChild.value;
-    console.log("new", newVal);
-    console.log("old", oldVal);
   }
 );
 
