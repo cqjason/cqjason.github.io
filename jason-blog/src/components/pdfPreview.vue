@@ -48,15 +48,20 @@ watch(
   () => props.pdfUrl,
   (newVal, oldVal) => {
     state.source = newVal;
+    state.pageNum = 1;
+    loadPdfPages();
   }
 );
 
-onMounted(() => {
+function loadPdfPages() {
   const loadingTask = createLoadingTask(state.source);
   loadingTask.promise.then((pdf: { numPages: number }) => {
     state.numPages = pdf.numPages;
   });
-  console.log(props.pdfUrl);
+}
+
+onMounted(() => {
+  loadPdfPages();
 });
 
 const scale = computed(() => `transform:scale(${state.scale})`);
