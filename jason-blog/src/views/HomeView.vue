@@ -37,13 +37,11 @@
 <script lang="ts" setup>
 import { ref, getCurrentInstance, reactive, onBeforeUpdate } from "vue";
 import PDFView from "../components/pdfPreview.vue";
-import jsPdf from "../../../files/LinearAlgebra/pdf/线性代数中的线性方程组.pdf";
 import { createDecorator, setup } from "vue-class-component";
 
 //, /\.vue$/
 
 //打印导入的pdf路径格式
-console.log(jsPdf);
 const booksDirectoryRoot = "_/files";
 const booksDirectory = require.context("../../../files", true, /\.pdf$/);
 interface chapter {
