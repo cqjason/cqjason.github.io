@@ -12,7 +12,7 @@
       </el-radio-group>
     </el-header>
     <el-container>
-      <el-aside width="25%">
+      <el-aside width="auto">
         <el-tabs
           tab-position="left"
           class="demo-tabs"
@@ -26,7 +26,7 @@
           </el-tab-pane>
         </el-tabs>
       </el-aside>
-      <el-main width="75%">
+      <el-main>
         <div class="pdf">
           <PDFView :pdfUrl="selectedChapterUrl" v-show="isPdf" />
         </div>
