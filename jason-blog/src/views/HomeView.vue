@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container style="height: 100%">
     <el-header>
       <el-radio-group style="margin-bottom: 30px">
         <el-radio-button
@@ -28,7 +28,13 @@
       </el-aside>
       <el-main width="75%">
         <div class="pdf">
-          <PDFView :pdfUrl="selectedChapterUrl" />
+          <PDFView :pdfUrl="selectedChapterUrl" v-show="isPdf" />
+        </div>
+        <div class="html" v-show="!isPdf" style="width: 100%; height: 100%">
+          <iframe
+            :src="selectedChapterUrl"
+            style="width: 100%; height: 100%"
+          ></iframe>
         </div>
       </el-main>
     </el-container>
@@ -37,13 +43,14 @@
 <script lang="ts" setup>
 import { ref, getCurrentInstance, reactive, onBeforeUpdate } from "vue";
 import PDFView from "../components/pdfPreview.vue";
-import { createDecorator, setup } from "vue-class-component";
-
-//, /\.vue$/
 
 //打印导入的pdf路径格式
-const booksDirectoryRoot = "_/files";
-const booksDirectory = require.context("../../../files", true, /\.pdf$/);
+const booksDirectoryRoot = "/files";
+const isPdf: boolean = getUrlValue("mode") == "pdf";
+console.log("isPdf:" + isPdf);
+const booksDirectory = isPdf
+  ? require.context("../../public/files", true, /\.pdf$/)
+  : require.context("../../public/files", true, /\.html$/);
 interface chapter {
   index: number;
   name: string;
@@ -136,8 +143,23 @@ const init = () => {
   });
 };
 
-init();
+function getUrlValue(key: string) {
+  var url = window.location.href; //获取当前url
+  var dz_url = url.split("#")[0]; //获取#/之前的字符串
+  var cs_url = dz_url.split("?")[1]; //获取?之后的参数字符串
+  if (cs_url == undefined) {
+    return undefined;
+  }
+  var cs_arr = cs_url.split("&"); //参数字符串分割为数组
+  var cs = {};
+  for (var i = 0; i < cs_arr.length; i++) {
+    //遍历数组，拿到json对象
+    cs[cs_arr[i].split("=")[0]] = cs_arr[i].split("=")[1];
+  }
+  return cs[key];
+}
 
+init();
 const selectedBook = ref();
 const selectedChapters = ref();
 const selectedChapterUrl = ref("");

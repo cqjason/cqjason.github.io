@@ -11,4 +11,11 @@
   font-size: 32px;
   font-weight: 600;
 }
+html,
+body {
+  height: 100%;
+}
+#app {
+  height: 100%;
+}
 </style>
