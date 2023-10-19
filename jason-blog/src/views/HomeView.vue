@@ -45,16 +45,16 @@ import { ref, getCurrentInstance, reactive, onBeforeUpdate } from "vue";
 import PDFView from "../components/pdfPreview.vue";
 
 //打印导入的pdf路径格式
-const booksDirectoryRoot = "/files";
+const booksDirectoryRoot = process.env["VUE_APP_BASE_URL"] + "/files";
 const isPdf: boolean = getUrlValue("mode") == "pdf";
 console.log("isPdf:" + isPdf);
-const booksDirectory = isPdf
-  ? require.context("../../public/files", true, /\.pdf$/)
-  : require.context("../../public/files", true, /\.html$/);
+const pdfFiles = require.context("/public/files", true, /\.pdf$/);
+const htmlFiles = require.context("/public/files", true, /\.html$/);
+const booksDirectory = isPdf ? pdfFiles : htmlFiles;
 interface chapter {
   index: number;
   name: string;
-  pdfUrl: string;
+  bookUrl: string;
 }
 
 interface book {
@@ -95,7 +95,7 @@ const selectChapter = (tab, event) => {
 const selectChapterFromIndex = (index: number) => {
   const selectingChapter = selectedChapters.value.at(index);
   if (selectingChapter != undefined) {
-    selectedChapterUrl.value = selectingChapter.pdfUrl;
+    selectedChapterUrl.value = selectingChapter.bookUrl;
   }
 };
 
@@ -110,14 +110,14 @@ function getBook(directoryArray: string[], bookDirectory: string) {
     directoryArray.length - 1
   );
   chapter = chapter?.split(".").at(0);
-  const pdfUrl: string = booksDirectoryRoot + bookDirectory.substring(1);
-  return { bookName, chapter, pdfUrl };
+  const bookUrl: string = booksDirectoryRoot + bookDirectory.substring(1);
+  return { bookName, chapter, bookUrl };
 }
 
 const init = () => {
   booksDirectory.keys().forEach((bookDirectory) => {
     let directoryArray: string[] = bookDirectory.split("/");
-    let { bookName, chapter, pdfUrl } = getBook(directoryArray, bookDirectory);
+    let { bookName, chapter, bookUrl } = getBook(directoryArray, bookDirectory);
 
     if (bookName == emptyBookName()) {
       return;
@@ -127,7 +127,9 @@ const init = () => {
       books.push({
         index: books.length,
         name: bookName,
-        chapters: chapter ? [{ index: 0, name: chapter, pdfUrl: pdfUrl }] : [],
+        chapters: chapter
+          ? [{ index: 0, name: chapter, bookUrl: bookUrl }]
+          : [],
       });
     } else {
       let book = books.at(bookIndex);
@@ -136,7 +138,7 @@ const init = () => {
         chapters.push({
           index: chapters.length,
           name: chapter,
-          pdfUrl: pdfUrl,
+          bookUrl: bookUrl,
         });
       }
     }
@@ -170,7 +172,8 @@ if (book1 != undefined) {
   selectedChapters.value = selectedBook.value.chapters;
   const book1chapter1 = selectedChapters.value.at(0);
   if (book1chapter1 != undefined) {
-    selectedChapterUrl.value = book1chapter1.pdfUrl;
+    selectedChapterUrl.value =
+      process.env["VUE_APP_BASE_URL"] + book1chapter1.bookUrl;
   } else {
     throw new Error("Unexpected error: Missing selectedChapter");
   }
