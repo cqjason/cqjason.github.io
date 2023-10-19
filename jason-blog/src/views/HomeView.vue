@@ -172,8 +172,7 @@ if (book1 != undefined) {
   selectedChapters.value = selectedBook.value.chapters;
   const book1chapter1 = selectedChapters.value.at(0);
   if (book1chapter1 != undefined) {
-    selectedChapterUrl.value =
-      process.env["VUE_APP_BASE_URL"] + book1chapter1.bookUrl;
+    selectedChapterUrl.value = book1chapter1.bookUrl;
   } else {
     throw new Error("Unexpected error: Missing selectedChapter");
   }
