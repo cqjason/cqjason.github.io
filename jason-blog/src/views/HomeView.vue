@@ -49,7 +49,7 @@ const booksDirectoryRoot = process.env["VUE_APP_BASE_URL"] + "/files";
 const isPdf: boolean = getUrlValue("mode") == "pdf";
 console.log("isPdf:" + isPdf);
 const pdfFiles = require.context("/public/files", true, /\.pdf$/);
-const htmlFiles = require.context("/public/files", true, /\.html$/);
+const htmlFiles = require.context("html-loader!/public/files", true, /\.html$/);
 const booksDirectory = isPdf ? pdfFiles : htmlFiles;
 interface chapter {
   index: number;

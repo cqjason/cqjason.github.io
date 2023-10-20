@@ -1,6 +1,3 @@
-const { defineConfig } = require("@vue/cli-service");
-
-const path = require("path");
 module.exports = {
   transpileDependencies: true,
   outputDir: "../docs",
@@ -19,10 +16,6 @@ module.exports = {
         {
           test: /\.md$/,
           use: [{ loader: "markdown-loader", options: {} }],
-        },
-        {
-          test: /\.html$/,
-          use: [{ loader: "html-loader" }],
         },
       ],
     },
